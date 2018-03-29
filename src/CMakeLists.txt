@@ -34,6 +34,9 @@ if(WITH_GUROBI)
 
   add_executable( gurobi_uai gurobi_uai.cpp )
   target_link_libraries( gurobi_uai LP_MP-MRF DD_ILP GUROBI m stdc++ pthread lingeling )
+
+  add_executable( test_combilp test_combilp.cpp )
+  target_link_libraries( test_combilp HDF5 LP_MP-MRF DD_ILP GUROBI m stdc++ pthread lingeling )
 endif()
 
 add_executable(FWMAP_opengm FWMAP_opengm.cpp)

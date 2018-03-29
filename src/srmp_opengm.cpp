@@ -7,5 +7,7 @@ using namespace LP_MP;
 int main(int argc, char** argv) {
 MpRoundingSolver<Solver<FMC_SRMP,LP,StandardVisitor>> solver(argc,argv);
 solver.ReadProblem(ParseOpenGM<Solver<FMC_SRMP,LP,StandardVisitor>>);
-return solver.Solve();
+bool result = solver.Solve();
+WriteGM("reparametrized.h5", solver.template GetProblemConstructor<0>());
+return result;
 }

@@ -10,16 +10,16 @@ using namespace LP_MP;
 
 int main(int argc, char** argv)
 {
-  using solver_type = Solver<FMC_SRMP,LP_external_solver<DD_ILP::gurobi_interface,LP>,StandardTighteningVisitor>;
-  std::vector<std::string> options = { 
-    {""},
-    {"-i"}, {"combiLP.uai"}
-    //{"-i"}, {"test.h5"}
-    //{"-i"}, {"6000032.h5"}
-  };
-  solver_type solver(options);
-  solver.ReadProblem(UaiMrfInput::ParseProblem<solver_type>);
-  //solver.ReadProblem(LP_MP::ParseOpenGM<solver_type>);
-  solver.GetLP().write_to_file("dd_ilp_gurobi.lp");
-  solver.GetLP().solve();
+  try {
+    using solver_type = Solver<FMC_SRMP,LP_external_solver<DD_ILP::gurobi_interface,LP>,StandardVisitor>;
+    std::vector<std::string> options = { 
+      {""},
+      {"-i"}, {"combiLP.h5"}
+    };
+    solver_type solver(options);
+    solver.ReadProblem(LP_MP::ParseOpenGM<solver_type>);
+    solver.GetLP().solve();
+  } catch (GRBException ex) {
+    std::cout << "Exception caught: " << ex.getErrorCode() << std::endl << ex.getMessage() << std::endl;
+  }
 }
