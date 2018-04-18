@@ -67,8 +67,8 @@ public:
       }
       unaryFactor_[node_number] = u;
    }
-   template<typename COST>
-   PairwiseFactorContainer* AddPairwiseFactor(INDEX var1, INDEX var2, const COST& cost)
+   template<typename... ARGS>
+   PairwiseFactorContainer* AddPairwiseFactor(INDEX var1, INDEX var2, ARGS... args)
    { 
       //if(var1 > var2) std::swap(var1,var2);
       assert(var1<var2);
@@ -76,7 +76,7 @@ public:
       //assert(cost.size() == GetNumberOfLabels(var1) * GetNumberOfLabels(var2));
       //assert(pairwiseMap_.find(std::make_tuple(var1,var2)) == pairwiseMap_.end());
       //PairwiseFactorContainer* p = new PairwiseFactorContainer(PairwiseFactor(cost), cost);
-      auto* p = lp_->template add_factor<PairwiseFactorContainer>(GetNumberOfLabels(var1), GetNumberOfLabels(var2), cost);
+      auto* p = lp_->template add_factor<PairwiseFactorContainer>(GetNumberOfLabels(var1), GetNumberOfLabels(var2), args...);
       ConstructPairwiseFactor(*(p->GetFactor()), var1, var2);
       pairwiseFactor_.push_back(p);
       pairwiseIndices_.push_back(std::array<INDEX,2>({var1,var2}));
@@ -338,6 +338,10 @@ public:
      assert(check_pairwise_factors_present() == pairwiseIndices.size());
 
      return std::move(trees);
+  }
+
+  constexpr INDEX arity() {
+     return 2;
   }
 
 protected:
@@ -695,6 +699,10 @@ public:
       }
 
       return no_triplets_added;
+   }
+
+   constexpr INDEX arity() {
+      return 3;
    }
 
 
