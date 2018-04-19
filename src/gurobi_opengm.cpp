@@ -8,7 +8,7 @@ using namespace LP_MP;
 
 int main(int argc, char** argv) 
 {
-  using solver_type = Solver<FMC_SRMP,LP_external_solver<DD_ILP::gurobi_interface,LP>,StandardVisitor>;
+  using solver_type = Solver<LP_external_solver<DD_ILP::gurobi_interface, LP<FMC_SRMP>>,StandardVisitor>;
   solver_type solver(argc, argv);
   solver.ReadProblem(ParseOpenGM<solver_type>);
   solver.GetLP().solve(); 
